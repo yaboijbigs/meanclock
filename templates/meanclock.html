@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mean Clock Celebrity Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="neets-api-key" content="{{ neets_api_key }}">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render={{ recaptcha_site_key }}"></script>
+</head>
+<body>
+    <h1 class="mean-clock-text">MEAN CLOCK</h1>
+<p class="description-text">Tap on a celebrity to create an audio file of the celebrity insulting you for staring at it. <br/> This will be played on Mean Clock randomly.</p>
+
+
+    <div class="carousel-container">
+        <div id="celebrityCarousel" class="carousel">
+            {% for celebrity in celebrities %}
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='images/' + celebrity.image) }}" alt="{{ celebrity.name }}">
+                <h2>{{ celebrity.name }}</h2>
+            </div>
+            {% endfor %}
+        </div>
+        <button id="prevBtn" class="carousel-btn">❮</button>
+        <button id="nextBtn" class="carousel-btn">❯</button>
+    </div>
+
+    <!-- WebGL Canvas -->
+    <canvas id="c"></canvas>
+    <script>
+        function onSubmit(token) {
+          submitMessage();
+        }
+    </script>
+    <div id="text-box-container" class="text-box-container">
+        <div class="text-box">
+            <span class="close-btn" onclick="closeTextBox()">&times;</span>
+            <h2 id="selected-celebrity"></h2>
+            <textarea id="user-input" maxlength="200" placeholder="Type your message here..."></textarea>
+            <br/>
+            <button class="g-recaptcha"
+            data-sitekey="{{ recaptcha_site_key }}"
+            data-callback='onSubmit'
+            data-action='submit'>Submit</button>
+            <h2><p id="status-text" style="display:none; color: #ffa500; margin-top: 10px; font-size: 1em;"></p></h2>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</body>
+</html>

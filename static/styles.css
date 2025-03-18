@@ -1,0 +1,358 @@
+@font-face {
+    font-family: 'SmothyBubble';
+    src: url('../static/SmothyBubble-d9D06.otf') format('opentype');
+}
+
+
+body {
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+h1 {
+    margin-top: 20px;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.logo {
+    margin-top: 20px;
+    width: 200px;
+    height: auto;
+    z-index:20
+}
+
+.carousel-container {
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    height: auto;
+    overflow: hidden;
+    z-index: 2; /* Ensure it is above the WebGL canvas */
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    background-color: #121212;
+    pointer-events: none; /* Make sure the canvas doesn't block interactions */
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    transition: opacity 1s ease, transform 0.5s ease;
+    opacity: 0.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 23;
+}
+
+.carousel-item img {
+    width: 70%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;
+    margin-bottom: 20px;
+    padding: 40px;
+    z-index: 24;
+}
+
+.carousel-item h2 {
+    font-family: 'SmothyBubble', sans-serif;
+    font-size: 2.5em;
+    color: #ffa500;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    letter-spacing: 0.05em;
+    z-index: 72;
+}
+
+.carousel-item img.glow {
+    filter: drop-shadow(0 0 20px white);
+}
+
+.glow {
+    filter: drop-shadow(0 0 20px white) blur(10px); /* Glow effect */
+    transition: filter 0.5s ease-in-out; /* Smooth transition for both ease-in and ease-out */
+}
+
+.description-text {
+    font-family: 'SmothyBubble', sans-serif;
+    font-size: 1.5em; /* Adjust the size to be smaller than the main heading */
+    color: #ffa500; /* Match the color with the "MEAN CLOCK" text */
+    text-align: center;
+    margin-bottom: 20px;
+    z-index: 15;
+}
+
+
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 11;
+    border-radius: 50%;
+}
+
+#prevBtn {
+    left: 10px;
+}
+
+#nextBtn {
+    right: 10px;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-item.animate {
+    animation: fadeIn 1s ease;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.rainbow-wave {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: linear-gradient(to bottom, 
+        #ff0000, #ff3300, #ff6600, #ff9900, #ffcc00, #ffff00,
+        #ccff00, #99ff00, #66ff00, #33ff00, #00ff00, #00ff33,
+        #00ff66, #00ff99, #00ffcc, #00ffff, #00ccff, #0099ff,
+        #0066ff, #0033ff, #0000ff, #3300ff, #6600ff, #9900ff,
+        #cc00ff, #ff00ff, #ff00cc, #ff0099, #ff0066, #ff0033
+    );
+    background-size: 400% 200%;
+    opacity: 0; /* Ensure it starts invisible */
+    pointer-events: none;
+    transform-origin: top center;
+    filter: brightness(1.2) saturate(1.5);
+    transition: opacity 0.5s ease-out; /* Smooth transition for opacity */
+}
+
+.rainbow-wave.active {
+    opacity: 0.95; /* Make it visible during the animation */
+    animation: rainbowWave 2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes rainbowWave {
+    0% {
+        transform: translateY(-100%) perspective(1000px) rotateX(60deg) scale(1, 0.3);
+        background-position: 0 0;
+        opacity: 1; /* Ensure it starts visible */
+    }
+    99% {
+        transform: translateY(25%) perspective(1000px) rotateX(45deg) scale(1, 0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(500%) perspective(1000px) rotateX(30deg) scale(1, 0.7);
+        background-position: 0 -100%;
+        opacity: 0; /* Fade out at the end */
+    }
+}
+
+
+@keyframes waveSurface {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(20px);
+    }
+}
+
+.wave-surface {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+    opacity: 0.5;
+    animation: waveSurface 2s ease-in-out infinite;
+}
+
+.text-box-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-right: 20px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; /* Start with opacity 0 */
+    transform: scale(0.9); /* Start slightly scaled down */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition for opacity and scale */
+}
+
+.text-box {
+    background-color: #333;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: relative;
+}
+
+
+.text-box h2 {
+    color: #ffa500;
+    font-size: 2.5em;
+    margin-top: -5px;
+    margin-bottom: 20px;
+    font-family: 'SmothyBubble', sans-serif;
+}
+
+.text-box textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid #444;
+    background-color: #222;
+    color: #fff;
+    padding: 10px;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.text-box button {
+    background-color: #ffa500;
+    color: #fff;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-family: 'SmothyBubble', sans-serif;
+    cursor: pointer;
+}
+
+.text-box button:hover {
+    background-color: #ff8c00;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 35px;
+    color: #ffa500;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.mean-clock-text {
+    font-family: 'SmothyBubble', sans-serif;
+    font-size: 5em;
+    color: #ffa500;
+    text-align: center;
+    margin: 10px 0;
+    z-index: 5;
+}
+
+@media (max-width: 600px) {
+    * {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .description-text {
+        font-size: 1.2em;
+    }
+
+    .carousel-container {
+        width: 100%; /* Allow the container to take up the full width */
+        padding: 10px; /* Add some padding for spacing */
+    }
+
+    .carousel-item img {
+        max-width: 100%; /* Ensure images don't overflow */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .carousel-btn {
+        font-size: 1.5em; /* Reduce button size */
+        padding: 5px 10px; /* Adjust padding for better spacing */
+    }
+
+    .text-box {
+        padding: 20px;
+        max-width: 90%; /* Allow the text box to take up more width */
+    }
+
+    .text-box h2 {
+        font-size: 2em;
+    }
+
+    .text-box textarea {
+        font-size: 1em;
+    }
+
+    .mean-clock-text {
+        font-size: 4em;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Start content at the top */
+        align-items: center;
+        min-height: 100vh;
+    }
+    
+    .carousel-container,
+    .description-text,
+    h1.mean-clock-text {
+        padding: 0 10px; /* Ensure consistent padding on small screens */
+        margin: 0 auto; /* Center content properly */
+    }
+
+    .text-box {
+        flex: 0 1 auto; /* Allow content to grow and shrink as needed */
+        max-width: 100%; /* Prevent overflow */
+    }
+}
